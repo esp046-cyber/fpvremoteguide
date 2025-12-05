@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FPV Drone Remote Control Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 20px 30px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 1em;
+            font-weight: 600;
+            color: #495057;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            background: #e9ecef;
+        }
+
+        .tab.active {
+            background: white;
+            color: #2a5298;
+            border-bottom: 3px solid #2a5298;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #2a5298;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-left: 4px solid #667eea;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #495057;
+            margin: 20px 0 10px;
+            font-size: 1.3em;
+        }
+
+        .stick-diagram {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .stick {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .stick-visual {
+            width: 150px;
+            height: 150px;
+            margin: 20px auto;
+            position: relative;
+            background: #e9ecef;
+            border-radius: 50%;
+            border: 3px solid #2a5298;
+        }
+
+        .stick-center {
+            width: 40px;
+            height: 40px;
+            background: #667eea;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .stick-label {
+            position: absolute;
+            font-size: 0.9em;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .label-up { top: -25px; left: 50%; transform: translateX(-50%); }
+        .label-down { bottom: -25px; left: 50%; transform: translateX(-50%); }
+        .label-left { left: -40px; top: 50%; transform: translateY(-50%); }
+        .label-right { right: -40px; top: 50%; transform: translateY(-50%); }
+
+        .info-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .info-card h3 {
+            color: white;
+            margin-top: 0;
+        }
+
+        .steps {
+            counter-reset: step-counter;
+        }
+
+        .step {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            counter-increment: step-counter;
+            position: relative;
+            padding-left: 60px;
+        }
+
+        .step::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .tip {
+            background: #d1ecf1;
+            border-left: 4px solid #0dcaf0;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        ul {
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+
+        li {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+
+        .mode-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .mode-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #dee2e6;
+            transition: all 0.3s;
+        }
+
+        .mode-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .mode-card h4 {
+            color: #2a5298;
+            margin-bottom: 10px;
+        }
+
+                    .checklist {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            background: #f8f9fa;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .checklist-item:hover {
+            background: #e9ecef;
+        }
+
+        .checklist-item.checked {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .checklist-item label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 1.05em;
+        }
+
+        .problem-solution {
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .problem-solution h4 {
+            color: #dc3545;
+            margin-bottom: 10px;
+        }
+
+        .solution {
+            color: #28a745;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .glossary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .glossary-term {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .glossary-term strong {
+            color: #2a5298;
+            font-size: 1.1em;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .reset-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+
+        .reset-btn:hover {
+            background: #c82333;
+        }
+
+        .quick-ref {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .quick-ref-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .quick-ref-card h4 {
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .stick-diagram {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .tab {
+                padding: 15px 20px;
+                font-size: 0.9em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .glossary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 FPV Drone Remote Control Guide</h1>
+            <p class="subtitle">Master Your Radio Transmitter for FPV Flight</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('basics')">Basics</button>
+            <button class="tab" onclick="showTab('controls')">Controls</button>
+            <button class="tab" onclick="showTab('setup')">Setup</button>
+            <button class="tab" onclick="showTab('modes')">Flight Modes</button>
+            <button class="tab" onclick="showTab('quickstart')">Quick Start</button>
+            <button class="tab" onclick="showTab('comparison')">Compare Radios</button>
+            <button class="tab" onclick="showTab('budget')">Budget Guide</button>
+            <button class="tab" onclick="showTab('rates')">Rates Calculator</button>
+            <button class="tab" onclick="showTab('checklist')">Pre-Flight</button>
+            <button class="tab" onclick="showTab('troubleshoot')">Troubleshooting</button>
+            <button class="tab" onclick="showTab('glossary')">Glossary</button>
+            <button class="tab" onclick="showTab('tips')">Tips & Tricks</button>
+        </div>
+
+        <div class="content">
+            <!-- Basics Tab -->
+            <div id="basics" class="tab-content active">
+                <div class="section">
+                    <h2>Understanding Your FPV Remote</h2>
+                    <p>An FPV drone remote control (also called a transmitter or radio) is your primary interface for controlling your drone. Modern FPV remotes operate on 2.4GHz frequency and use protocols like ELRS, Crossfire, or Tracer.</p>
+
+                    <div class="info-card">
+                        <h3>Common Remote Types</h3>
+                        <ul>
+                            <li><strong>RadioMaster TX16S:</strong> Popular multi-protocol radio with OpenTX/EdgeTX</li>
+                            <li><strong>RadioMaster Zorro:</strong> Compact gamepad-style controller</li>
+                            <li><strong>TBS Tango 2:</strong> Crossfire integrated compact radio</li>
+                            <li><strong>Jumper T-Lite:</strong> Budget-friendly lightweight option</li>
+                            <li><strong>FrSky Taranis:</strong> Classic choice with AccSt protocol</li>
+                        </ul>
+                    </div>
+
+                    <h3>Key Components</h3>
+                    <ul>
+                        <li><strong>Gimbals:</strong> Two joysticks that control throttle, yaw, pitch, and roll</li>
+                        <li><strong>Switches:</strong> Toggle and momentary switches for flight modes and arming</li>
+                        <li><strong>Display Screen:</strong> Shows telemetry, settings, and model information</li>
+                        <li><strong>Antenna:</strong> Transmits control signals to your drone</li>
+                        <li><strong>Battery:</strong> Powers the remote (usually 2S LiPo or 18650 cells)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Controls Tab -->
+            <div id="controls" class="tab-content">
+                <div class="section">
+                    <h2>Stick Controls Explained</h2>
+                    
+                    <div class="info-card">
+                        <h3>Mode 2 (Most Common in FPV)</h3>
+                        <p>This guide uses Mode 2 configuration, which is the standard for FPV and drone racing worldwide.</p>
+                    </div>
+
+                    <div class="stick-diagram">
+                        <div class="stick">
+                            <h3>Left Stick</h3>
+                            <div class="stick-visual">
+                                <div class="stick-center"></div>
+                                <span class="stick-label label-up">YAW RIGHT</span>
+                                <span class="stick-label label-down">YAW LEFT</span>
+                                <span class="stick-label label-left">THROTTLE DOWN</span>
+                                <span class="stick-label label-right">THROTTLE UP</span>
+                            </div>
+                            <p><strong>Up/Down:</strong> Throttle (altitude)</p>
+                            <p><strong>Left/Right:</strong> Yaw (rotation)</p>
+                        </div>
+
+                        <div class="stick">
+                            <h3>Right Stick</h3>
+                            <div class="stick-visual">
+                                <div class="stick-center"></div>
+                                <span class="stick-label label-up">PITCH FORWARD</span>
+                                <span class="stick-label label-down">PITCH BACK</span>
+                                <span class="stick-label label-left">ROLL LEFT</span>
+                                <span class="stick-label label-right">ROLL RIGHT</span>
+                            </div>
+                            <p><strong>Up/Down:</strong> Pitch (forward/back)</p>
+                            <p><strong>Left/Right:</strong> Roll (strafe left/right)</p>
+                        </div>
+                    </div>
+
+                    <h3>Control Movements Explained</h3>
+                    <ul>
+                        <li><strong>Throttle:</strong> Controls motor speed and altitude. Push up to ascend, down to descend</li>
+                        <li><strong>Yaw:</strong> Rotates the drone left or right around its center axis</li>
+                        <li><strong>Pitch:</strong> Tips the drone forward or backward to move in that direction</li>
+                        <li><strong>Roll:</strong> Tips the drone left or right to strafe sideways</li>
+                    </ul>
+
+                    <div class="tip">
+                        <strong>💡 Pro Tip:</strong> Most FPV pilots use "pinch" grip (thumb and index finger) for precise control, especially on the right stick.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Setup Tab -->
+            <div id="setup" class="tab-content">
+                <div class="section">
+                    <h2>Setting Up Your Remote</h2>
+
+                    <div class="steps">
+                        <div class="step">
+                            <h3>Charge Your Remote</h3>
+                            <p>Fully charge the remote battery before first use. Most remotes use 2S LiPo (7.4V) or dual 18650 cells.</p>
+                        </div>
+
+                        <div class="step">
+                            <h3>Install RF Module</h3>
+                            <p>If using external module (ELRS, Crossfire), install it in the module bay on the back of the radio. Secure the antenna properly.</p>
+                        </div>
+
+                        <div class="step">
+                            <h3>Create a Model</h3>
+                            <p>Navigate to the model menu and create a new model profile. Name it after your drone (e.g., "5inch Freestyle").</p>
+                        </div>
+
+                        <div class="step">
+                            <h3>Bind to Receiver</h3>
+                            <p>Put your drone's receiver in bind mode, then activate bind mode on your transmitter. Wait for solid LED indicating successful binding.</p>
+                        </div>
+
+                        <div class="step">
+                            <h3>Configure Channels</h3>
+                            <p>Map channels: CH1=Roll, CH2=Pitch, CH3=Throttle, CH4=Yaw. Assign switches for Arm (CH5) and Flight Mode (CH6).</p>
+                        </div>
+
+                        <div class="step">
+                            <h3>Set Failsafe</h3>
+                            <p>Configure failsafe to drop throttle to zero if signal is lost. This prevents flyaways.</p>
+                        </div>
+
+                        <div class="step">
+                            <h3>Calibrate in Betaflight</h3>
+                            <p>Connect to Betaflight Configurator, go to Receiver tab, and verify all stick inputs show correct ranges (1000-2000).</p>
+                        </div>
+                    </div>
+
+                    <div class="warning">
+                        <strong>⚠️ Warning:</strong> Always remove props when binding or testing controls for the first time!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flight Modes Tab -->
+            <div id="modes" class="tab-content">
+                <div class="section">
+                    <h2>Flight Modes</h2>
+
+                    <div class="mode-grid">
+                        <div class="mode-card">
+                            <h4>🔰 ANGLE Mode</h4>
+                            <p><strong>Best for:</strong> Beginners</p>
+                            <p>Auto-levels the drone when you release the sticks. Prevents flips and limits tilt angle. Great for learning basic controls.</p>
+                        </div>
+
+                        <div class="mode-card">
+                            <h4>🌊 HORIZON Mode</h4>
+                            <p><strong>Best for:</strong> Intermediate pilots</p>
+                            <p>Auto-levels at small stick inputs but allows flips at full stick deflection. Good transition mode.</p>
+                        </div>
+
+                        <div class="mode-card">
+                            <h4>🚀 ACRO Mode</h4>
+                            <p><strong>Best for:</strong> FPV and racing</p>
+                            <p>Full manual control with no auto-leveling. Stick position controls rotation rate. Required for advanced freestyle and racing.</p>
+                        </div>
+
+                        <div class="mode-card">
+                            <h4>⚡ AIR Mode</h4>
+                            <p><strong>Always on in FPV</strong></p>
+                            <p>Keeps PID controller active at zero throttle. Essential for FPV flying, allows control during flips and rolls.</p>
+                        </div>
+                    </div>
+
+                    <h3>Configuring Flight Mode Switch</h3>
+                    <p>Most pilots use a 3-position switch for flight modes:</p>
+                    <ul>
+                        <li><strong>Position 1:</strong> Angle mode (safe)</li>
+                        <li><strong>Position 2:</strong> Horizon mode (mixed)</li>
+                        <li><strong>Position 3:</strong> Acro mode (full manual)</li>
+                    </ul>
+
+                    <div class="tip">
+                        <strong>💡 Progression Tip:</strong> Start with Angle mode for your first flights. Once comfortable, try Horizon mode. Move to Acro when you can confidently control orientation.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tips Tab -->
+            <div id="tips" class="tab-content">
+                <div class="section">
+                    <h2>Tips & Best Practices</h2>
+
+                    <h3>Quick Reference</h3>
+                    <div class="quick-ref">
+                        <div class="quick-ref-card">
+                            <h4>⚡ Typical Range</h4>
+                            <p>ELRS: 10-30km</p>
+                            <p>Crossfire: 10-40km</p>
+                            <p>ExpressLRS: Best for racing</p>
+                        </div>
+                        <div class="quick-ref-card">
+                            <h4>🔋 Battery Life</h4>
+                            <p>2S LiPo: 6-10 hours</p>
+                            <p>18650: 8-12 hours</p>
+                            <p>Charge at 1C rate</p>
+                        </div>
+                        <div class="quick-ref-card">
+                            <h4>📡 Frequencies</h4>
+                            <p>2.4GHz: Long range</p>
+                            <p>900MHz: Even longer</p>
+                            <p>5.8GHz: Video only</p>
+                        </div>
+                        <div class="quick-ref-card">
+                            <h4>🎯 Latency</h4>
+                            <p>ELRS 500Hz: ~4ms</p>
+                            <p>Crossfire: ~5-10ms</p>
+                            <p>Lower = Better</p>
+                        </div>
+                    </div>
+
+                    <h3>Before Every Flight</h3>
+                    <ul>
+                        <li>Check radio battery level (above 30%)</li>
+                        <li>Verify correct model is selected</li>
+                        <li>Test all switches and stick movements</li>
+                        <li>Confirm arm switch is in disarmed position</li>
+                        <li>Check RF link quality in OSD</li>
+                    </ul>
+
+                    <h3>Gimbal Calibration</h3>
+                    <p>Calibrate your gimbals if you notice drift or incorrect centering:</p>
+                    <ul>
+                        <li>Access radio settings menu</li>
+                        <li>Find calibration option</li>
+                        <li>Move both sticks through full range of motion</li>
+                        <li>Center both sticks and confirm</li>
+                        <li>Test in Betaflight receiver tab</li>
+                    </ul>
+
+                    <h3>Common Switch Assignments</h3>
+                    <div class="mode-grid">
+                        <div class="mode-card">
+                            <h4>Arm Switch</h4>
+                            <p>2-position switch (usually SA or SB). Down=Disarmed, Up=Armed. Always disarm when done flying.</p>
+                        </div>
+
+                        <div class="mode-card">
+                            <h4>Flight Mode</h4>
+                            <p>3-position switch (usually SC or SD). Maps to Angle, Horizon, and Acro modes.</p>
+                        </div>
+
+                        <div class="mode-card">
+                            <h4>Beeper</h4>
+                            <p>Momentary switch (usually SE). Triggers lost model alarm to find crashed drone.</p>
+                        </div>
+
+                        <div class="mode-card">
+                            <h4>Turtle Mode</h4>
+                            <p>Momentary switch. Reverses motors to flip drone right-side up after crash.</p>
+                        </div>
+                    </div>
+
+                    <div class="warning">
+                        <strong>⚠️ Safety First:</strong>
+                        <ul>
+                            <li>Never arm with props on indoors</li>
+                            <li>Always disarm immediately after landing</li>
+                            <li>Keep fingers away from props when armed</li>
+                            <li>Maintain line of sight in legal regions</li>
+                            <li>Check local regulations before flying</li>
+                        </ul>
+                    </div>
+
+                    <h3>Maintenance Tips</h3>
+                    <ul>
+                        <li>Clean gimbal dust buildup every few months</li>
+                        <li>Check antenna connections regularly</li>
+                        <li>Update firmware when new versions release</li>
+                        <li>Store radio with battery at storage voltage (3.8V per cell)</li>
+                        <li>Backup model configurations regularly</li>
+                    </ul>
+
+                    <div class="tip">
+                        <strong>💡 Learning Resources:</strong>
+                        <ul>
+                            <li>Joshua Bardwell's YouTube channel for tutorials</li>
+                            <li>FPV simulators: Liftoff, DRL Sim, Velocidrone</li>
+                            <li>Join local FPV community groups</li>
+                            <li>Practice in simulator before flying real drone</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pre-Flight Checklist Tab -->
+            <div id="checklist" class="tab-content">
+                <div class="section">
+                    <h2>✅ Pre-Flight Checklist</h2>
+                    <p>Complete this checklist before every flight to ensure safety and prevent crashes!</p>
+
+                    <div class="info-card">
+                        <h3>Why Use a Checklist?</h3>
+                        <p>Even experienced pilots forget things. A checklist prevents costly mistakes and keeps you safe. Make this a habit!</p>
+                    </div>
+
+                    <div class="checklist">
+                        <h3>Radio/Transmitter Checks</h3>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" onclick="event.stopPropagation()">
+                            <label>Radio battery above 30% (preferably 50%+)</label>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" onclick="event.stopPropagation()">
+                            <label>Correct model selected on transmitter</label>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" onclick="event.stopPropagation()">
+                            <label>Antenna properly attached and extended</label>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" onclick="event.stopPropagation()">
+                            <label>All switches in correct starting positions</label>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" onclick="event.stopPropagation()">
+                            <label>Arm switch in DISARMED position</label>
+                        </div>
+                    </div>
+
+                    <div class="checklist">
+                        <h3>Drone Checks</h3>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" onclick="event.stopPropagation()">
+                            <label>Battery fully charged and secured properly</label>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" onclick="event.stopPropagation()">
+                            <label>Props installed correctly (check rotation direction)</label>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" onclick="event.stopPropagation()">
+                            <label>No loose screws or damaged components</label>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" onclick="event.stopPropagation()">
+                            <label>Camera angle adjusted for flight style</label>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" onclick="event.stopPropagation()">
+                            <label>VTX antenna secure and not damaged</label>
+                        </div>
+                    </div>
+
+                    <div class="checklist">
+                        <h3>Connection & Link Quality</h3>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" onclick="event.stopPropagation()">
+                            <label>Radio connected to drone (solid LED on receiver)</label>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" onclick="event.stopPropagation()">
+                            <label>Good RSSI/LQ reading in OSD (above 90 for ELRS)</label>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" onclick="event.stopPropagation()">
+                            <label>Test all stick movements (check in OSD or Betaflight)</label>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" onclick="event.stopPropagation()">
+                            <label>Test arm switch (motors should spin up)</label>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" onclick="event.stopPropagation()">
+                            <label>Test flight mode switch changes in OSD</label>
+                        </div>
+                    </div>
+
+                    <div class="checklist">
+                        <h3>Environment & Safety</h3>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" onclick="event.stopPropagation()">
+                            <label>Clear flight area (no people or obstacles nearby)</label>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" onclick="event.stopPropagation()">
+                            <label>Check weather conditions (wind, rain)</label>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" onclick="event.stopPropagation()">
+                            <label>Verify legal to fly in this location</label>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" onclick="event.stopPropagation()">
+                            <label>Spotter present (if required/recommended)</label>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <input type="checkbox" onclick="event.stopPropagation()">
+                            <label>Emergency plan ready (know where you'll land if needed)</label>
+                        </div>
+                    </div>
+
+                    <button class="reset-btn" onclick="resetChecklist()">🔄 Reset Checklist</button>
+
+                    <div class="tip">
+                        <strong>💡 Pro Tip:</strong> Print this checklist and laminate it. Keep it in your flight bag and check items off with a dry-erase marker!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Troubleshooting Tab -->
+            <div id="troubleshoot" class="tab-content">
+                <div class="section">
+                    <h2>🔧 Troubleshooting Common Issues</h2>
+
+                    <div class="problem-solution">
+                        <h4>❌ Problem: Radio won't bind to receiver</h4>
+                        <p><strong>Symptoms:</strong> Receiver LED blinking, no connection in OSD</p>
+                        <p class="solution">✅ Solutions:</p>
+                        <ul>
+                            <li>Ensure receiver is in bind mode (usually hold button while powering on)</li>
+                            <li>Check that radio and receiver use same protocol (ELRS, Crossfire, etc.)</li>
+                            <li>Update firmware on both radio and receiver to matching versions</li>
+                            <li>Try re-flashing receiver firmware via Betaflight passthrough</li>
+                            <li>Check binding phrase matches (for ELRS)</li>
+                        </ul>
+                    </div>
+
+                    <div class="problem-solution">
+                        <h4>❌ Problem: Poor range or signal dropouts</h4>
+                        <p><strong>Symptoms:</strong> Failsafe triggering, low RSSI/LQ, control stuttering</p>
+                        <p class="solution">✅ Solutions:</p>
+                        <ul>
+                            <li>Check transmitter and receiver antennas are properly connected</li>
+                            <li>Ensure antennas are perpendicular (not parallel) to each other</li>
+                            <li>Verify transmitter power level is set correctly (check local regulations)</li>
+                            <li>Check for carbon fiber blocking receiver antenna (relocate if needed)</li>
+                            <li>Update to latest firmware - often improves link quality</li>
+                            <li>Try different packet rate (e.g., 250Hz vs 500Hz for ELRS)</li>
+                        </ul>
+                    </div>
+
+                    <div class="problem-solution">
+                        <h4>❌ Problem: Stick drift or incorrect centering</h4>
+                        <p><strong>Symptoms:</strong> Drone drifts when sticks are centered, incorrect values in Betaflight</p>
+                        <p class="solution">✅ Solutions:</p>
+                        <ul>
+                            <li>Calibrate gimbals in radio settings menu</li>
+                            <li>Clean gimbal potentiometers with contact cleaner</li>
+                            <li>Adjust gimbal tension (too loose can cause drift)</li>
+                            <li>Check for physical damage to gimbal mechanism</li>
+                            <li>Set proper endpoints in radio (usually 1000-2000)</li>
+                            <li>May need gimbal replacement if severely worn</li>
+                        </ul>
+                    </div>
+
+                    <div class="problem-solution">
+                        <h4>❌ Problem: Can't arm the drone</h4>
+                        <p><strong>Symptoms:</strong> Arm switch doesn't activate motors, beeping from drone</p>
+                        <p class="solution">✅ Solutions:</p>
+                        <ul>
+                            <li>Check arm channel is assigned correctly (usually CH5)</li>
+                            <li>Verify accelerometer is calibrated in Betaflight</li>
+                            <li>Check CLI tab for arming prevention flags</li>
+                            <li>Ensure throttle is at zero position</li>
+                            <li>Disable "Airmode" for initial arming if required</li>
+                            <li>Check if failsafe mode is active (bad receiver connection)</li>
+                            <li>Verify battery voltage is sufficient (above 3.5V per cell)</li>
+                        </ul>
+                    </div>
+
+                    <div class="problem-solution">
+                        <h4>❌ Problem: Wrong control response (inverted or mixed channels)</h4>
+                        <p><strong>Symptoms:</strong> Pushing forward makes drone go backward, roll controls yaw, etc.</p>
+                        <p class="solution">✅ Solutions:</p>
+                        <ul>
+                            <li>Check channel mapping in Betaflight receiver tab (AETR order)</li>
+                            <li>Verify channel assignments match: CH1=Roll, CH2=Pitch, CH3=Throttle, CH4=Yaw</li>
+                            <li>Use Betaflight channel map setting if channels are in wrong order</li>
+                            <li>Check for reversed channels - tick "Reverse" boxes as needed</li>
+                            <li>Ensure correct model selected on transmitter</li>
+                        </ul>
+                    </div>
+
+                    <div class="problem-solution">
+                        <h4>❌ Problem: Radio battery drains quickly</h4>
+                        <p><strong>Symptoms:</strong> Battery only lasts 2-3 hours instead of 8+</p>
+                        <p class="solution">✅ Solutions:</p>
+                        <ul>
+                            <li>Lower backlight brightness in radio settings</li>
+                            <li>Disable haptic feedback if not needed</li>
+                            <li>Check battery health (may need replacement if old)</li>
+                            <li>Ensure radio is actually turning off (not going to sleep mode)</li>
+                            <li>Reduce RF power if using high power unnecessarily</li>
+                            <li>Update firmware - newer versions often have better power management</li>
+                        </ul>
+                    </div>
+
+                    <div class="problem-solution">
+                        <h4>❌ Problem: Telemetry not working</h4>
+                        <p><strong>Symptoms:</strong> No battery voltage, RSSI, or other data on radio screen</p>
+                        <p class="solution">✅ Solutions:</p>
+                        <ul>
+                            <li>Enable telemetry in Betaflight configuration</li>
+                            <li>Check telemetry protocol matches (SmartPort, CRSF, etc.)</li>
+                            <li>Verify telemetry wire connected properly to flight controller</li>
+                            <li>Set up telemetry screens in radio (may need manual configuration)</li>
+                            <li>Update receiver firmware - older versions may have bugs</li>
+                        </ul>
+                    </div>
+
+                    <div class="warning">
+                        <strong>⚠️ Still Having Issues?</strong>
+                        <ul>
+                            <li>Check manufacturer's documentation for your specific radio model</li>
+                            <li>Join FPV community Discord servers for live help</li>
+                            <li>Post on r/Multicopter or r/fpvracing with detailed description</li>
+                            <li>Watch troubleshooting videos from Joshua Bardwell or similar channels</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Glossary Tab -->
+            <div id="glossary" class="tab-content">
+                <div class="section">
+                    <h2>📚 FPV & Radio Terminology</h2>
+                    <p>Essential terms every FPV pilot should know:</p>
+
+                    <h3>Radio/Transmitter Terms</h3>
+                    <div class="glossary-grid">
+                        <div class="glossary-term">
+                            <strong>TX (Transmitter)</strong>
+                            <p>Your radio controller that sends signals to the drone. Also called the radio or remote.</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>RX (Receiver)</strong>
+                            <p>The component on your drone that receives signals from the transmitter.</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>Gimbal</strong>
+                            <p>The joystick mechanism on your radio. Contains potentiometers to detect stick position.</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>OpenTX / EdgeTX</strong>
+                            <p>Open-source operating systems for radio transmitters. EdgeTX is a fork of OpenTX with more features.</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>ELRS (ExpressLRS)</strong>
+                            <p>Open-source, long-range, low-latency RC link. Very popular for FPV racing and freestyle.</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>Crossfire (TBS)</strong>
+                            <p>Long-range RC link system by Team BlackSheep. Known for reliability and range up to 40km.</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>Binding</strong>
+                            <p>Process of pairing your transmitter with your receiver so they communicate securely.</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>Failsafe</strong>
+                            <p>Safety feature that controls what happens when radio signal is lost (usually disarms and drops).</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>Telemetry</strong>
+                            <p>Data sent back from drone to radio (battery voltage, RSSI, GPS, etc.).</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>Channel</strong>
+                            <p>Individual control input. Standard setup uses 4+ channels (Throttle, Yaw, Pitch, Roll, Arm, Mode, etc.).</p>
+                        </div>
+                    </div>
+
+                    <h3>Signal & Connection Terms</h3>
+                    <div class="glossary-grid">
+                        <div class="glossary-term">
+                            <strong>RSSI</strong>
+                            <p>Received Signal Strength Indicator. Shows how strong the radio signal is (higher = better).</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>LQ (Link Quality)</strong>
+                            <p>Percentage of successfully received packets. 100% = perfect, below 70% = concerning.</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>Latency</strong>
+                            <p>Delay between moving stick and drone responding. Lower is better. ELRS can achieve ~4ms.</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>Packet Rate</strong>
+                            <p>How many times per second radio sends updates (e.g., 150Hz, 250Hz, 500Hz). Higher = lower latency but shorter range.</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>2.4GHz / 900MHz</strong>
+                            <p>Radio frequencies. 2.4GHz is standard, 900MHz has better range but fewer channels and needs license in some regions.</p>
+                        </div>
+                    </div>
+
+                    <h3>Flight Control Terms</h3>
+                    <div class="glossary-grid">
+                        <div class="glossary-term">
+                            <strong>Throttle</strong>
+                            <p>Controls motor speed/altitude. Up = more power, down = less power.</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>Yaw</strong>
+                            <p>Rotation around vertical axis. Left stick left/right on Mode 2.</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>Pitch</strong>
+                            <p>Forward/backward tilt. Right stick up/down on Mode 2.</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>Roll</strong>
+                            <p>Left/right tilt. Right stick left/right on Mode 2.</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>Rates</strong>
+                            <p>How sensitive stick inputs are. Higher rates = more aggressive response.</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>Expo (Exponential)</strong>
+                            <p>Reduces sensitivity at center stick, increases at edges. Makes flying smoother.</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>Acro Mode</strong>
+                            <p>Manual flight mode with no auto-leveling. Stick position controls rotation rate.</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>Angle Mode</strong>
+                            <p>Self-leveling mode. Drone returns to level when sticks centered. Good for beginners.</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>Horizon Mode</strong>
+                            <p>Hybrid mode. Auto-levels at small inputs, allows flips at full stick.</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>Air Mode</strong>
+                            <p>Keeps stabilization active at zero throttle. Essential for acrobatic flying.</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>Turtle Mode</strong>
+                            <p>Reverses motors to flip drone upside-right after crashing upside-down.</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>Arming</strong>
+                            <p>Activating motors to prepare for flight. Always disarm when not flying.</p>
+                        </div>
+                    </div>
+
+                    <h3>General FPV Terms</h3>
+                    <div class="glossary-grid">
+                        <div class="glossary-term">
+                            <strong>OSD (On-Screen Display)</strong>
+                            <p>Information overlay in FPV goggles (battery voltage, timer, RSSI, etc.).</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>VTX (Video Transmitter)</strong>
+                            <p>Sends video from drone camera to your goggles. Operates on 5.8GHz.</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>FC (Flight Controller)</strong>
+                            <p>Brain of the drone. Runs Betaflight/KISS/etc. and controls motors.</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>ESC (Electronic Speed Controller)</strong>
+                            <p>Controls individual motor speeds based on FC commands.</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>PID</strong>
+                            <p>Proportional-Integral-Derivative tuning values that control how drone responds to inputs.</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>Betaflight</strong>
+                            <p>Most popular flight controller firmware. Open-source and highly configurable.</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>LiPo (Lithium Polymer)</strong>
+                            <p>Battery type used in FPV. Measured in cells (1S, 2S, 4S, 6S, etc.). Higher = more voltage/power.</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>C Rating</strong>
+                            <p>Battery discharge rate. Higher C rating = can deliver more current safely.</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>mAh (Milliamp Hours)</strong>
+                            <p>Battery capacity. Higher mAh = longer flight time but heavier.</p>
+                        </div>
+
+                        <div class="glossary-term">
+                            <strong>DVR</strong>
+                            <p>Digital Video Recording. Records FPV footage from goggles (lower quality than HD cam).</p>
+                        </div>
+                    </div>
+
+                    <div class="tip">
+                        <strong>💡 Learning Tip:</strong> Don't try to memorize everything at once! Reference this glossary as you encounter new terms in tutorials and forums.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tab contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        function toggleCheck(item) {
+            const checkbox = item.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+            
+            if (checkbox.checked) {
+                item.classList.add('checked');
+            } else {
+                item.classList.remove('checked');
+            }
+        }
+
+        function resetChecklist() {
+            const checkboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]');
+            const items = document.querySelectorAll('.checklist-item');
+            
+            checkboxes.forEach(checkbox => checkbox.checked = false);
+            items.forEach(item => item.classList.remove('checked'));
+        }
+    </script>
+</body>
+</html>
